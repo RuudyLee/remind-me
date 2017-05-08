@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">RemindMe</string>
+    <string name="enter_msg">Enter your message:</string>
+    <string name="interval">Interval (in minutes):</string>
+    <string name="fix_your_posture">Fix your posture asshole!</string>
+    <string name="start">Start!</string>
+    <string-array name="interval_array">
+        <item>5</item>
+        <item>10</item>
+        <item>15</item>
+        <item>20</item>
+    </string-array>
+</resources>
