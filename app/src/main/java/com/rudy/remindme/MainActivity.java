@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
         mBuilder = new NotificationCompat.Builder(this)
                 .setSmallIcon(android.R.drawable.arrow_down_float)
                 .setContentTitle("Remind me!")
-                .setContentText("WHATEVER")
+                .setContentText("Running. Tap to stop.")
                 .addAction(android.R.drawable.ic_media_ff, "Stop", resultPendingIntent);
 
         mBuilder.setContentIntent(resultPendingIntent);
