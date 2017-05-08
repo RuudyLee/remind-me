@@ -8,9 +8,10 @@ import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -24,11 +25,6 @@ public class MainActivity extends AppCompatActivity {
 
         notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-        mBuilder = new NotificationCompat.Builder(this)
-                .setSmallIcon(android.R.drawable.arrow_down_float)
-                .setContentTitle("Remind me!")
-                .setContentText("WHATEVER");
-
         Intent resultIntent = new Intent(this, MainActivity.class);
         resultIntent.setAction(Intent.ACTION_MAIN);
         resultIntent.addCategory(Intent.CATEGORY_LAUNCHER);
@@ -40,15 +36,40 @@ public class MainActivity extends AppCompatActivity {
                         resultIntent,
                         0
                 );
+
+        mBuilder = new NotificationCompat.Builder(this)
+                .setSmallIcon(android.R.drawable.arrow_down_float)
+                .setContentTitle("Remind me!")
+                .setContentText("WHATEVER")
+                .addAction(android.R.drawable.ic_media_ff, "Stop", resultPendingIntent);
+
         mBuilder.setContentIntent(resultPendingIntent);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        notificationManager.cancelAll();
+        Intent intent = new Intent(this, ReminderService.class);
+        stopService(intent);
+    }
+
     public void startServiceOnClick(View v) {
+
+        // Get message
+        EditText editText = (EditText) findViewById(R.id.et_msg);
+        String msg = editText.getText().toString();
+
+        // Get interval value
         Spinner spinner = (Spinner) findViewById(R.id.sp_interval);
-        String msg = spinner.getSelectedItem().toString();
+        int interval = Integer.parseInt(spinner.getSelectedItem().toString());
+
 
         notificationManager.notify(0, mBuilder.build());
-        Toast.makeText(getApplicationContext(), "Service Started!", Toast.LENGTH_SHORT)
-                .show();
+
+        Intent intent = new Intent(this, ReminderService.class);
+        intent.putExtra("msg", msg);
+        intent.putExtra("interval", interval);
+        startService(intent);
     }
 }
